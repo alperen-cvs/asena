@@ -1,3 +1,5 @@
+# Registry konteynerleri namedtuple ile değiştir ! 
+# Gereksiz bellek tüketimi
 from collections import namedtuple
 from dataclasses import dataclass
 from typing import Any
