@@ -11,7 +11,7 @@ class TableInfo(QWidget):
     close = Signal(bool)
     def __init__(self,parent = None,items = (),winpos = None):
         super(TableInfo,self).__init__(parent = parent)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        #self.setWindowFlags(Qt.FramelessWindowHint)
         self.vertical_layout = QVBoxLayout()
         self.vertical_layout.setContentsMargins(0,0,0,0)
         self.setStyleSheet("background-color: '#1c1c30';\nborder: 1px solid gray;\nborder-radius: 10px;")
@@ -20,7 +20,6 @@ class TableInfo(QWidget):
             self.vertical_layout.addWidget(label)
         self.setLayout(self.vertical_layout)
         self.start_anim = QPropertyAnimation(self,b"geometry")
-        self.start_anim.setEasingCurve(QEasingCurve.OutCubic)
         self.start_anim.setDuration(300)
         self.start_anim.setStartValue(QRect(winpos.x,winpos.y,winpos.width,0))
         self.start_anim.setEndValue(QRect(winpos.x,winpos.y,winpos.width,winpos.height))

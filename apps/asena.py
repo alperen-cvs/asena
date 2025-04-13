@@ -23,6 +23,7 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtCore import QPropertyAnimation
 
+
 path = os.path.join(
     os.path.dirname(__file__),
     ".."
@@ -34,6 +35,7 @@ from utils.log_utils import create_new_logger_instance
 from models.main_window import Ui_MainWindow
 from models.custom_widgets import QCardWidget
 from models.table_model import TableInfo
+from models.custom_widgets import QCounterLabel
 from containers import WinPosition
 
 logger = create_new_logger_instance()
@@ -106,22 +108,36 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
 
             table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
             table_widget.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+    def disable_all_push_buttons(self):
+        for member in dir(self):
+            if isinstance(getattr(self,member),QPushButton):
+                pass
+    def enable_all_push_buttons(self):
+        for member in dir(self):
+            if isinstance(member,QPushButton):
+                print(member)
     def append_tables_to_scrollbar_area(self):
         base_frame_widget = QFrame()
-        vertical_layout_of_base_frame_widget = QGridLayout(base_frame_widget)
+        grid_layout_of_base_frame_widget = QGridLayout(base_frame_widget)
+
         scrollbar = self.stackedWidget.findChild(QStackedWidget)
         scrollbar = scrollbar.findChild(QScrollArea)
         print(scrollbar)
-        for i in range(70):
+        count = 8
+        example_customers = ["Ahmet yeşil","Efsa pamuk","Eftalya subaşı","Melisa aktaş","Yaren demir","Bora dal","Ezgi Çiçek","Asena Gül"]
+        for i,customers in enumerate(example_customers):
             row = i // 3
             col = i % 3
-            card_widget = QCardWidget(label_text="Masa %s" % (i))
-            card_widget.setFixedHeight(150)
+            card_widget = QCardWidget(customer_name=customers,label_text="Masa %s" % (i + 1))
+            if count > 8:
+                card_widget.setFixedHeight(150)
+            card_widget.vertical_layout.addWidget(QCounterLabel())
             card_widget.mouse_long_press.connect(self.launch_card_table_info_window)
-            vertical_layout_of_base_frame_widget.addWidget(card_widget,row,col)
+            grid_layout_of_base_frame_widget.addWidget(card_widget,row,col)
         scrollbar.setWidget(base_frame_widget)
     def launch_card_table_info_window(self):
         self.create_blur_window_effect()
+        self.disable_all_push_buttons()
         winpos = find_window_cordinates("ASENA")
         winpos_x = winpos.x + 235
         winpos_y = winpos.y + 180
@@ -132,17 +148,13 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
         self.table_model.show()
     def create_blur_window_effect(self):
         if self.blur_effect_toggle:
-            print("Blur eklendi !")
             self.blur_effect.setBlurRadius(3)
             self.setGraphicsEffect(self.blur_effect)
         else:
             self.blur_effect.setBlurRadius(0)
             self.setGraphicsEffect(self.blur_effect)
         self.blur_effect_toggle = not self.blur_effect_toggle
-    def disable_all_push_buttons(self):
-        for member in dir(self):
-            if isinstance(member,QPushButton):
-                member.setDisabled(True)
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if "ASENA" in enum_windows():
