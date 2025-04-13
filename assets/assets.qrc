@@ -1,0 +1,27 @@
+<RCC>
+  <qresource prefix="resources">
+    <file>table32px.png</file>
+    <file>database_btn.png</file>
+    <file>folder32px.png</file>
+    <file>endorsement_btn.png</file>
+    <file>order_aproved.png</file>
+    <file>sidebar_toggle.png</file>
+    <file>close_new.png</file>
+    <file>fullscreen.png</file>
+    <file>minimize_new.png</file>
+    <file>logout.png</file>
+    <file>already_waiting.png</file>
+    <file>history.png</file>
+    <file>order_completed.png</file>
+    <file>orders.png</file>
+    <file>settings.png</file>
+    <file>stock.png</file>
+    <file>orders.png</file>
+    <file>key32px.png</file>
+    <file>user32px.png</file>
+    <file>rose32px.png</file>
+    <file>asena_main.ico</file>
+    <file>close.png</file>
+    <file>minimize.png</file>
+  </qresource>
+</RCC>
