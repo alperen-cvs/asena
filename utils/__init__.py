@@ -22,7 +22,7 @@ def get_default_desktop() -> str:
     return desktop_path
 def create_desktop_shortcut() -> bool:
     pass
-
+#NOT BITMAP yapısını _win32structures dosyasına taşı burada gereksiz !
 class BITMAP(ctypes.Structure):
     _fields_ = [
         ("bmType", ctypes.wintypes.LONG),
