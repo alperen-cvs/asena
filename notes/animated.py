@@ -1,51 +1,63 @@
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QFrame
-from PySide6.QtCore import QPropertyAnimation, Property, QObject
-from PySide6.QtGui import QPainter, QPen, QColor
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QListWidget, QMessageBox
+from PySide6.QtCore import Qt
+import sys
 
-
-class AnimatedFrame(QFrame):
+class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self._border_color = QColor("black")
-    def getBorderColor(self):
-        return self._border_color
+        self.setWindowTitle("QListWidget Örneği")
+        self.resize(300, 250)
 
-    def setBorderColor(self, color):
-        self._border_color = color
-        self.update()  # repaint frame
-
-    borderColor = Property(QColor, getBorderColor, setBorderColor)
-
-    def paintEvent(self, event):
-        super().paintEvent(event)
-        painter = QPainter(self)
-        pen = QPen(self._border_color, 4)
-        painter.setPen(pen)
-        painter.drawRect(self.rect().adjusted(2, 2, -2, -2))  # hafif içeriden çiz
-
-
-class MainWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Border Renk Animasyonu")
+        # Ana layout
         layout = QVBoxLayout(self)
 
-        self.frame = AnimatedFrame()
-        layout.addWidget(self.frame)
+        # QListWidget oluştur
+        self.list_widget = QListWidget()
 
-        button = QPushButton("Kırmızıya Geçiş Yap")
-        layout.addWidget(button)
-        button.clicked.connect(self.animateBorder)
+        # Öğe ekle
+        self.list_widget.addItems([
+            "Elma",
+            "Armut",
+            "Muz",
+            "Karpuz",
+            "Çilek"
+        ])
 
-    def animateBorder(self):
-        self.anim = QPropertyAnimation(self.frame, b"borderColor")
-        self.anim.setDuration(2000)
-        self.anim.setStartValue(QColor("black"))
-        self.anim.setEndValue(QColor("#625fb8"))
-        self.anim.start()
+        # Seçildiğinde uyarı göster
+        self.list_widget.itemClicked.connect(self.on_item_clicked)
 
+        # Stil ekleyelim
+        self.list_widget.setStyleSheet("""
+            QListWidget {
+                background-color: #f0f0f0;
+                border: 1px solid #aaa;
+                border-radius: 10px;
+                padding: 5px;
+            }
 
-app = QApplication([])
-window = MainWindow()
-window.show()
-app.exec()
+            QListWidget::item {
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            QListWidget::item:selected {
+                background-color: #3498db;
+                color: white;
+            }
+
+            QListWidget::item:hover {
+                background-color: #d0e6f8;
+            }
+        """)
+
+        # Listeyi layout'a ekle
+        layout.addWidget(self.list_widget)
+
+    def on_item_clicked(self, item):
+        QMessageBox.information(self, "Seçilen", f"Seçtiğin meyve: {item.text()}")
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MyWindow()
+    window.show()
+    sys.exit(app.exec())

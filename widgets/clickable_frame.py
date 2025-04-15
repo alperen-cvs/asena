@@ -5,7 +5,7 @@ from PySide6.QtCore import QTimer
 from source.signal import ClickAbleFrameSignal
 
 class QClickAbleFrame(QFrame):
-    
+
     def __init__(self,*args,parent = None):
         super(QClickAbleFrame,self).__init__(*args,parent=parent)
         self.setStyleSheet("border: 1px solid #625fb8;")
