@@ -15,26 +15,6 @@ GetWindowTextLen = ctypes.windll.user32.GetWindowTextLengthW
 EnumWindows = ctypes.windll.user32.EnumWindows
 GetForegroundWindow = ctypes.windll.user32.GetForegroundWindow
 
-def find_window_cordinates(window_name: str) -> WinPosition:
-    """
-    returns the x y width and height values of the given window in the system and returns WinPosition
-    its usage is quite simple
-    win_pos = find_window_cordinates("Example Window")
-    print("width: ",winpos.width)
-    print("height: ",winpos.height)
-    print("x: ",winpos.x)
-    print("y: ",winpos.y)
-    :param window_name:
-    :return WinPosition:
-    """
-    rectangle = RECT()
-    hwnd = FindWindow(None,window_name)
-    GetWindowRect(hwnd,ctypes.byref(rectangle))
-    x = rectangle.left
-    y = rectangle.top
-    width = rectangle.right - rectangle.left
-    height = rectangle.bottom - rectangle.top
-    return WinPosition(x=x,y=y,width=width,height=height)
 
 
 def get_window_text(hwnd: int) -> str:
@@ -74,3 +54,25 @@ def enum_windows() -> list:
         if not window_text in black_list_windows[:] and not window_text.isdigit():
             windows.append(window_text)
     return windows
+
+def find_window_cordinates(window_name = get_current_window_text()) -> WinPosition:
+    """
+    returns the x y width and height values of the given window in the system and returns WinPosition
+    its usage is quite simple
+    win_pos = find_window_cordinates("Example Window")
+    print("width: ",winpos.width)
+    print("height: ",winpos.height)
+    print("x: ",winpos.x)
+    print("y: ",winpos.y)
+    :param window_name:
+    :return WinPosition:
+    """
+    rectangle = RECT()
+    hwnd = FindWindow(None,window_name)
+    GetWindowRect(hwnd,ctypes.byref(rectangle))
+    x = rectangle.left
+    y = rectangle.top
+    width = rectangle.right - rectangle.left
+    height = rectangle.bottom - rectangle.top
+    return WinPosition(x=x,y=y,width=width,height=height)
+

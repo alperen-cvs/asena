@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 
 from PySide6.QtWidgets import QVBoxLayout
@@ -29,16 +30,23 @@ path = os.path.join(
     ".."
 )
 sys.path.append(path)
+
+from enums.frame_constants import calculate_animated_order_window_position
+
 from utils.win32 import find_window_cordinates
 from utils.win32 import enum_windows
 from utils.log_utils import create_new_logger_instance
+
 from models.main_window import Ui_MainWindow
-from models.custom_widgets import QCardWidget
-from models.table_model import TableInfo
-from models.custom_widgets import QCounterLabel
+
+from widgets import QCardWidget
+from widgets import AnimatedWindow
+
 from containers import WinPosition
 
 logger = create_new_logger_instance()
+
+
 class AsenaMainWindow(QMainWindow,Ui_MainWindow):
     def __init__(self):
         super().__init__() # initialize all class
@@ -124,28 +132,39 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
         scrollbar = scrollbar.findChild(QScrollArea)
         print(scrollbar)
         count = 8
-        example_customers = ["Ahmet yeşil","Efsa pamuk","Eftalya subaşı","Melisa aktaş","Yaren demir","Bora dal","Ezgi Çiçek","Asena Gül"]
+        example_customers = [
+            "Ahmet yeşil",
+            "Ahmet yeşil",
+            "Ahmet yeşil","Ahmet yeşil",
+            "Ahmet yeşil","Ahmet yeşil",
+            "Ahmet yeşil","Ahmet yeşil",
+            "Ahmet Yeşil"
+
+
+        ]
         for i,customers in enumerate(example_customers):
             row = i // 3
             col = i % 3
-            card_widget = QCardWidget(customer_name=customers,label_text="Masa %s" % (i + 1))
-            if count > 8:
+            card_widget = QCardWidget(title=customers,text="Masa: %s" % (str(i)))
+            fx = random.randint(1000,20_000)
+            card_widget.timer.end_value = fx
+            if count > 10:
                 card_widget.setFixedHeight(150)
-            card_widget.vertical_layout.addWidget(QCounterLabel())
-            card_widget.mouse_long_press.connect(self.launch_card_table_info_window)
+            card_widget.signal.mouse_long_press.connect(self.launch_card_table_info_window)
             grid_layout_of_base_frame_widget.addWidget(card_widget,row,col)
         scrollbar.setWidget(base_frame_widget)
     def launch_card_table_info_window(self):
+
         self.create_blur_window_effect()
         self.disable_all_push_buttons()
         winpos = find_window_cordinates("ASENA")
-        winpos_x = winpos.x + 235
-        winpos_y = winpos.y + 180
-        winpos_width = winpos.width - 270
-        winpos_height = winpos.height - 200
-        self.table_model = TableInfo(items=("Alperen",),winpos=WinPosition(x = winpos_x,y = winpos_y,width = winpos_width,height = winpos_height))
-        self.table_model.close.connect(self.create_blur_window_effect)
-        self.table_model.show()
+        self.animated_window = AnimatedWindow(geometry = calculate_animated_order_window_position(winpos))
+        vly = QVBoxLayout(self.animated_window)
+        pbp = QPushButton("Click me")
+        pbp.clicked.connect(self.animated_window.close)
+        vly.addWidget(pbp)
+        self.animated_window.signal.closed.connect(self.create_blur_window_effect)
+        self.animated_window.show()
     def create_blur_window_effect(self):
         if self.blur_effect_toggle:
             self.blur_effect.setBlurRadius(3)

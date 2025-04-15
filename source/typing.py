@@ -1,7 +1,2 @@
-
-class Module:
-    """
-    This module type class
-    setup
-    login vb.
-    """
+class InvalidTypeError(Exception):
+    pass
