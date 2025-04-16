@@ -1,0 +1,3 @@
+# Böyle isimlendirme ne olduğu anlaşılmıyor bu yüzden daha iyi bir isimlendirme bulunmalı
+# image_resources yapılabilir 
+# sadece .py dosyaları bulundurmalıdır
