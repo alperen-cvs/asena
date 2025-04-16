@@ -29,7 +29,12 @@ path = os.path.join(
     os.path.dirname(__file__),
     ".."
 )
+
 sys.path.append(path)
+
+from utils import get_assets_rc_path
+sys.path.append(get_assets_rc_path())
+
 
 from enums.frame_constants import calculate_animated_order_window_position
 

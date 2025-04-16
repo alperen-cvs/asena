@@ -1,10 +1,7 @@
 import os
 import time
 class Defaults:
-    DEFAULT_SETUP_PATH = os.path.join(
-        os.getenv("LocalAppData"),
-        "Asena"
-    )
+
     DEFAULT_CRASH_STR = "Hata oluştu, :/ Hata raporu paketlenecek eğer sizinde ricanız olursa ekran kayıt bilgileride bu rapora dahil olucak ekran kayıtlarının dahil edilmesini istiyor musunuz ? "
     DEFAULT_MAX_WINDOW_SIZE = 16777215
     DEFAULT_TIME_FORMAT = "%d_%m_%y"

@@ -5,34 +5,39 @@ import ctypes.wintypes
 
 from utils.reg_utils import Registry
 from utils.reg_utils import HKEY
-from utils.reg_utils import REGTYPES
 
+from ._win32structs import BITMAP
+def get_assets_rc_path() -> str:
+    return os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "image_src"
+    )
 def exe_mode_enabled() -> bool:
     """
-    it's checks program running exe mode or raw source
+    ito find out if the program is running in exe mode
+    NOTE: Please remember that this is only valid for nuitka, other compilers may have different methods, so methods like sys.frozen are invalid
     :return:
     """
     return globals().get("__compiled__",False)
 
 def get_default_desktop() -> str:
+    """
+    Returns the user's current desktop path
+    :return:
+    """
     registry = Registry(HKEY.HKEY_CURRENT_USER,r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders")
     desktop_path = registry.read_key("Desktop").value
     if desktop_path.startswith("%"):
         desktop_path = desktop_path[1:desktop_path.index("%",1).replace("%")] # SOMETIMES registry items returns %USERPROFILE%\Desktop
     return desktop_path
-def create_desktop_shortcut() -> bool:
-    pass
-
-class BITMAP(ctypes.Structure):
-    _fields_ = [
-        ("bmType", ctypes.wintypes.LONG),
-        ("bmWidth", ctypes.wintypes.LONG),
-        ("bmHeight", ctypes.wintypes.LONG),
-        ("bmWidthBytes", ctypes.wintypes.LONG),
-        ("bmPlanes", ctypes.wintypes.WORD),
-        ("bmBitsPixel", ctypes.wintypes.WORD),
-        ("bmBits", ctypes.wintypes.LPVOID),
-    ]
+def create_desktop_shortcut(exe_path):
+    lnk_path = os.path.basename(os.path.splitext(exe_path)[0]) + ".lnk"
+    lnk_path = os.path.join(get_user_desktop(), lnk_path)
+    win32_client = Dispatch("WScript.Shell")
+    shortcut = win32_client.CreateShortcut(lnk_path)
+    shortcut.TargetPath = exe_path
+    shortcut.Save()
 
 
 create_rand_char = lambda len:"".join(random.sample(string.ascii_letters,len))
