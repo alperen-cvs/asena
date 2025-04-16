@@ -3,7 +3,7 @@ import sqlite3
 # 1.Sİ DOSYA GEREKSİZ
 # 2.Sİ HİÇBİR İŞLEVİ YOK BUNU GÖRÜRSEN BU DOSYAYI SİL 
 # daha temiz bir import için from database.managament import DbManagement 
-# ya da from database import Database şeklinde import edilmeli
+# ya da from database import Database şeklinde import edilmeli.
 
 db = sqlite3.connect("our.db")
 cursor = db.cursor()
