@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# buradaki her dosyanın sonu model ile bitmeli
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
