@@ -1,9 +1,9 @@
 # this IntEnum has been created for better readability.
 
 import winreg
-from enum import IntEnum
-
+from . import IntEnum
 class HKEY(IntEnum):
+
     HKEY_CURRENT_USER = winreg.HKEY_CURRENT_USER
     HKEY_LOCAL_MACHINE = winreg.HKEY_LOCAL_MACHINE
     HKEY_USERS = winreg.HKEY_USERS

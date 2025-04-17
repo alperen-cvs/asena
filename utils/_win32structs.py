@@ -19,3 +19,6 @@ class BITMAP(ctypes.Structure):
         ("bmBitsPixel", ctypes.wintypes.WORD),
         ("bmBits", ctypes.wintypes.LPVOID),
     ]
+
+
+

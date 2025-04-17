@@ -26,9 +26,8 @@ class AnimatedWindow(QWidget):
 
     def __init__(self,parent = None,geometry = WinPosition(15,130,500,500)):
         super(AnimatedWindow,self).__init__(parent = parent)
-
-        self.start_anim = QPropertyAnimation(self,b"geometry")
         self._geometry = geometry
+        self.start_anim = QPropertyAnimation(self,b"geometry")
         self.start_anim.setDuration(300)
         self.start_anim.setStartValue(QRect(self._geometry.x,self._geometry.y,self._geometry.width,0))
         self.start_anim.setEndValue(QRect(self._geometry.x,self._geometry.y,self._geometry.width,self._geometry.height))
@@ -45,6 +44,7 @@ class AnimatedWindow(QWidget):
         """
         if self.toggle:
             event.ignore() # We ignored the incident so that it would not be closed directly.
+            self.setMinimumSize(0,0) #set fixed size if set make it default
             self.close_anim = QPropertyAnimation(self, b"geometry")
             if not self.static_close: #
                self._geometry = find_window_cordinates(self.windowTitle())
@@ -58,4 +58,8 @@ class AnimatedWindow(QWidget):
             self.close()
         self.toggle = not self.toggle
     def showEvent(self, event, /):
+
+        if self.minimumHeight() == self.maximumHeight():
+            self.setMaximumHeight(self._geometry.height)
         self.start_anim.start(QAbstractAnimation.DeletionPolicy.DeleteWhenStopped) # This allows the window to open in an animated manner when it opens, and it closes in the same way.
+        self.setFixedSize()

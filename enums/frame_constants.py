@@ -1,6 +1,6 @@
 # This file created for all window frame constants
 
-from enum import IntEnum
+from . import IntEnum
 from containers import WinPosition
 class AnimatedOrderWindowConstants(IntEnum):
 
