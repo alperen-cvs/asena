@@ -8,7 +8,7 @@ from PySide6.QtGui import QPixmap
 
 class QCardWidget(QClickAbleFrame):
 
-    def __init__(self,title = "This is a title",text = "This is a text",image = None,parent = None,resize = ()):
+    def __init__(self,title = "This is a title",text = "This is a text",image = None,parent = None,resize = (),border = True):
         """
         :param title: for title
         :param text: for text(message)
@@ -29,16 +29,16 @@ class QCardWidget(QClickAbleFrame):
         self.text_label.setStyleSheet("border: none;")
 
 
-        if not image is None and isinstance(image,str):
+        if not image is None:
             self.image_label = QLabel()
             self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.image_label.setStyleSheet("border: none;")
             self.pixmap = QPixmap(image)
             if self.pixmap.width() > 400 and self.pixmap.height() > 400:
                 raise ValueError("Image size overflow pictures must be maximum 400x400")
-            if resize == ():
-                self.image_label.setPixmap(self.pixmap.scaled(QSize(self.image_label.width(),self.image_label.height()),Qt.AspectRatioMode.KeepAspectRatio))
-            else:
-                self.image_label.setFixedSize(QSize(resize[0],resize[1]))
+            self.image_label.setPixmap(self.pixmap)
+            if len(resize) == 2:
+                self.image_label.setFixedSize(*resize)
             self.vertical_layout.addWidget(self.image_label,alignment=Qt.AlignmentFlag.AlignCenter)
         self.vertical_layout.addWidget(self.title_label)
         self.vertical_layout.addWidget(self.text_label)

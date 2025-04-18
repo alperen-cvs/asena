@@ -2,6 +2,7 @@ import os
 import random
 import sys
 
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtWidgets import QGridLayout
@@ -35,7 +36,6 @@ sys.path.append(path)
 
 from utils import get_assets_rc_path
 sys.path.append(get_assets_rc_path())
-
 
 from enums.frame_constants import calculate_animated_order_window_position
 
@@ -150,7 +150,7 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
     def handle_scrollbar_of_order_page_area(self,scrollbar_area: QScrollArea):
         widget = QWidget()
         vertical_layout = QVBoxLayout(widget)
-        card_widget = QCardWidget(text="Herhangi bir sipariş yok :/",title="",image=u":/resources/minimize.png",resize=(150,150))
+        card_widget = QCardWidget(text="Herhangi bir sipariş yok :/",title="",image=QPixmap(u":/resources/mood_bad200px.png"),resize=(200,200),border=False)
         vertical_layout.addWidget(card_widget)
         self.stacked_pages.insertWidget(2,widget)
     def launch_card_table_info_window(self):
