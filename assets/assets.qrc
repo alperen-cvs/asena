@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="resources">
+    <file>mood_bad400px.png</file>
     <file>table32px.png</file>
     <file>database_btn.png</file>
     <file>folder32px.png</file>

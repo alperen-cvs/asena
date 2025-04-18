@@ -21,6 +21,7 @@ from PySide6.QtCore import QRect
 from PySide6.QtCore import QFile
 from PySide6.QtCore import Qt,QEasingCurve
 from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QLabel
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtCore import QPropertyAnimation
 
@@ -42,7 +43,7 @@ from utils.win32 import find_window_cordinates
 from utils.win32 import enum_windows
 from utils.log_utils import create_new_logger_instance
 
-from models.main_window import Ui_MainWindow
+from models.main_window_model import Ui_MainWindow
 
 from widgets import QCardWidget
 from widgets import AnimatedWindow
@@ -70,14 +71,11 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
         self.blur_effect_toggle = True
 
         self.stretch_all_table_widgets()
-        self.orders_history_btn.setCheckable(False)
-        self.append_tables_to_scrollbar_area()
+        self.set_all_scrollbars()
     def handle_sidebar(self):
         sidebar_width = 153
         collapsed_width = 0
-        # <>
         main_width = self.width()
-        print(self.slide_sidebar.width())
         if self.slide_sidebar.width() == 0:
             # sidebar is opening
 
@@ -108,19 +106,32 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
         qproperty_animation_object.setDuration(duration)
         return qproperty_animation_object
     def set_all_signals(self):
-       self.active_orders_btn.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(1))
-       self.orders_history_btn.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(2))
-       self.orders_screen_btn.clicked.connect(lambda:self.stackedWidget.setCurrentIndex(0))
-       self.endorsement_btn.clicked.connect(lambda *_:None)
-       self.sidebar_toggle_btn.clicked.connect(self.handle_sidebar)
+        # Main Slidebar btns
+        self.active_orders_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(0))
+        self.orders_history_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(1))
+        self.orders_screen_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(2))
+        self.table_management_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(3))
+        self.endorsement_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(4))
+        self.stock_management_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(5))
+        self.settings_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(6))
+        # side bar btn
+        self.minisidebar_orders_screen_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(0))
+        self.minisidebar_orders_history_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(1))
+        self.minisidebar_orders_screen_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(2))
+        self.minisidebar_table_management_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(3))
+        self.minisidenar_endorsement_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(4)) # Just small bugs :)
+        self.minisidebar_stock_management_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(5))
+        self.minisidebar_settings_btn.clicked.connect(lambda:self.stacked_pages.setCurrentIndex(6))
+
+        self.sidebar_toggle_btn.clicked.connect(self.handle_sidebar)
     def stretch_all_table_widgets(self):
         #NOTE -> FindChildren returns many objects
         #NOTE -> FindChild return just one objects
-        table_widgets = self.stackedWidget.findChildren(QTableWidget)
+        table_widgets = self.stacked_pages.findChildren(QTableWidget)
         for table_widget in table_widgets:
 
             table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-            table_widget.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            table_widget.verticalHeader().setDefaultSectionSize(45)
     def disable_all_push_buttons(self):
         for member in dir(self):
             if isinstance(getattr(self,member),QPushButton):
@@ -129,37 +140,21 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
         for member in dir(self):
             if isinstance(member,QPushButton):
                 print(member)
-    def append_tables_to_scrollbar_area(self):
+    def set_all_scrollbars(self):
         base_frame_widget = QFrame()
         grid_layout_of_base_frame_widget = QGridLayout(base_frame_widget)
-
-        scrollbar = self.stackedWidget.findChild(QStackedWidget)
-        scrollbar = scrollbar.findChild(QScrollArea)
-        print(scrollbar)
-        count = 8
-        example_customers = [
-            "Ahmet yeşil",
-            "Ahmet yeşil",
-            "Ahmet yeşil","Ahmet yeşil",
-            "Ahmet yeşil","Ahmet yeşil",
-            "Ahmet yeşil","Ahmet yeşil",
-            "Ahmet Yeşil"
-
-
-        ]
-        for i,customers in enumerate(example_customers):
-            row = i // 3
-            col = i % 3
-            card_widget = QCardWidget(title=customers,text="Masa: %s" % (str(i)))
-            fx = random.randint(1000,20_000)
-            card_widget.timer.end_value = fx
-            if count > 10:
-                card_widget.setFixedHeight(150)
-            card_widget.signal.mouse_long_press.connect(self.launch_card_table_info_window)
-            grid_layout_of_base_frame_widget.addWidget(card_widget,row,col)
-        scrollbar.setWidget(base_frame_widget)
+        scrollbars = self.stacked_pages.findChildren(QScrollArea)
+        for scrollbar_item in scrollbars[:]:
+            if hasattr(self,f"handle_{scrollbar_item.objectName()}"):
+                getattr(self,f"handle_{scrollbar_item.objectName()}")(scrollbar_item)
+    def handle_scrollbar_of_order_page_area(self,scrollbar_area: QScrollArea):
+        widget = QWidget()
+        vertical_layout = QVBoxLayout(widget)
+        card_widget = QCardWidget(text="Herhangi bir sipariş yok :/",title="",image=u":/resources/minimize.png",resize=(150,150))
+        vertical_layout.addWidget(card_widget)
+        self.stacked_pages.insertWidget(2,widget)
     def launch_card_table_info_window(self):
-
+        ##### Kod temizliği yapılması gerekiyor çok kötü görünüyor ####
         self.create_blur_window_effect()
         self.disable_all_push_buttons()
         winpos = find_window_cordinates("ASENA")
@@ -178,7 +173,6 @@ class AsenaMainWindow(QMainWindow,Ui_MainWindow):
             self.blur_effect.setBlurRadius(0)
             self.setGraphicsEffect(self.blur_effect)
         self.blur_effect_toggle = not self.blur_effect_toggle
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if "ASENA" in enum_windows():

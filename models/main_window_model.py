@@ -15,18 +15,17 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QGridLayout,
-    QHBoxLayout, QHeaderView, QLabel, QMainWindow,
-    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
-    QStackedWidget, QTableWidget, QTableWidgetItem, QToolBox,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
+    QLabel, QMainWindow, QPushButton, QScrollArea,
+    QSizePolicy, QSpacerItem, QStackedWidget, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 import assets_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(859, 529)
+        MainWindow.resize(1132, 529)
         MainWindow.setStyleSheet(u"QFrame {\n"
 "	background-color: \"#1c1c30\";\n"
 "}\n"
@@ -83,7 +82,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QHBoxLayout(self.main_container)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 10)
         self.minisidebar = QFrame(self.main_container)
         self.minisidebar.setObjectName(u"minisidebar")
         self.minisidebar.setMaximumSize(QSize(60, 16777215))
@@ -309,65 +308,72 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.header_frame)
 
-        self.stackedWidget = QStackedWidget(self.inside_container)
-        self.stackedWidget.setObjectName(u"stackedWidget")
-        self.pushbutton = QWidget()
-        self.pushbutton.setObjectName(u"pushbutton")
-        self.horizontalLayout_7 = QHBoxLayout(self.pushbutton)
+        self.stacked_pages = QStackedWidget(self.inside_container)
+        self.stacked_pages.setObjectName(u"stacked_pages")
+        self.active_orders = QWidget()
+        self.active_orders.setObjectName(u"active_orders")
+        self.horizontalLayout_7 = QHBoxLayout(self.active_orders)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.pushButton = QPushButton(self.pushbutton)
-        self.pushButton.setObjectName(u"pushButton")
+        self.scrollbar_of_active_order_page_area = QScrollArea(self.active_orders)
+        self.scrollbar_of_active_order_page_area.setObjectName(u"scrollbar_of_active_order_page_area")
+        self.scrollbar_of_active_order_page_area.setWidgetResizable(True)
+        self.active_order_page_area = QWidget()
+        self.active_order_page_area.setObjectName(u"active_order_page_area")
+        self.active_order_page_area.setGeometry(QRect(0, 0, 905, 442))
+        self.scrollbar_of_active_order_page_area.setWidget(self.active_order_page_area)
 
-        self.horizontalLayout_7.addWidget(self.pushButton)
+        self.horizontalLayout_7.addWidget(self.scrollbar_of_active_order_page_area)
 
-        self.pushButton_2 = QPushButton(self.pushbutton)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.stacked_pages.addWidget(self.active_orders)
+        self.orders_history_page = QWidget()
+        self.orders_history_page.setObjectName(u"orders_history_page")
+        self.hboxLayout = QHBoxLayout(self.orders_history_page)
+        self.hboxLayout.setObjectName(u"hboxLayout")
+        self.orders_history_table = QTableWidget(self.orders_history_page)
+        self.orders_history_table.setObjectName(u"orders_history_table")
 
-        self.horizontalLayout_7.addWidget(self.pushButton_2)
+        self.hboxLayout.addWidget(self.orders_history_table)
 
-        self.stackedWidget.addWidget(self.pushbutton)
-        self.table_widget = QWidget()
-        self.table_widget.setObjectName(u"table_widget")
-        self.horizontalLayout_12 = QHBoxLayout(self.table_widget)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.tableWidget = QTableWidget(self.table_widget)
-        if (self.tableWidget.columnCount() < 5):
-            self.tableWidget.setColumnCount(5)
-        if (self.tableWidget.rowCount() < 5):
-            self.tableWidget.setRowCount(5)
-        self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.tableWidget.setRowCount(5)
-        self.tableWidget.setColumnCount(5)
+        self.stacked_pages.addWidget(self.orders_history_page)
+        self.order_page = QWidget()
+        self.order_page.setObjectName(u"order_page")
+        self.scrollbar_of_order_page_area = QScrollArea(self.order_page)
+        self.scrollbar_of_order_page_area.setObjectName(u"scrollbar_of_order_page_area")
+        self.scrollbar_of_order_page_area.setGeometry(QRect(380, 170, 120, 80))
+        self.scrollbar_of_order_page_area.setWidgetResizable(True)
+        self.order_page_area = QWidget()
+        self.order_page_area.setObjectName(u"order_page_area")
+        self.order_page_area.setGeometry(QRect(0, 0, 118, 78))
+        self.scrollbar_of_order_page_area.setWidget(self.order_page_area)
+        self.stacked_pages.addWidget(self.order_page)
+        self.table_management_page = QWidget()
+        self.table_management_page.setObjectName(u"table_management_page")
+        self.verticalLayout_6 = QVBoxLayout(self.table_management_page)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.table_management_table = QTableWidget(self.table_management_page)
+        self.table_management_table.setObjectName(u"table_management_table")
 
-        self.horizontalLayout_12.addWidget(self.tableWidget)
+        self.verticalLayout_6.addWidget(self.table_management_table)
 
-        self.stackedWidget.addWidget(self.table_widget)
-        self.toolbox = QWidget()
-        self.toolbox.setObjectName(u"toolbox")
-        self.horizontalLayout_8 = QHBoxLayout(self.toolbox)
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.toolBox = QToolBox(self.toolbox)
-        self.toolBox.setObjectName(u"toolBox")
-        self.page_3 = QWidget()
-        self.page_3.setObjectName(u"page_3")
-        self.page_3.setGeometry(QRect(0, 0, 100, 30))
-        self.toolBox.addItem(self.page_3, u"Page 1")
-        self.page_4 = QWidget()
-        self.page_4.setObjectName(u"page_4")
-        self.page_4.setGeometry(QRect(0, 0, 100, 30))
-        self.toolBox.addItem(self.page_4, u"Page 2")
+        self.stacked_pages.addWidget(self.table_management_page)
+        self.turnover_page = QWidget()
+        self.turnover_page.setObjectName(u"turnover_page")
+        self.stacked_pages.addWidget(self.turnover_page)
+        self.stock_management_page = QWidget()
+        self.stock_management_page.setObjectName(u"stock_management_page")
+        self.verticalLayout_5 = QVBoxLayout(self.stock_management_page)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.stock_managament_table = QTableWidget(self.stock_management_page)
+        self.stock_managament_table.setObjectName(u"stock_managament_table")
 
-        self.horizontalLayout_8.addWidget(self.toolBox)
+        self.verticalLayout_5.addWidget(self.stock_managament_table)
 
-        self.stackedWidget.addWidget(self.toolbox)
-        self.options = QWidget()
-        self.options.setObjectName(u"options")
-        self.verticalLayout_4 = QVBoxLayout(self.options)
+        self.stacked_pages.addWidget(self.stock_management_page)
+        self.options_page = QWidget()
+        self.options_page.setObjectName(u"options_page")
+        self.verticalLayout_4 = QVBoxLayout(self.options_page)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.stacked_widget_tab_btn = QFrame(self.options)
+        self.stacked_widget_tab_btn = QFrame(self.options_page)
         self.stacked_widget_tab_btn.setObjectName(u"stacked_widget_tab_btn")
         self.stacked_widget_tab_btn.setMinimumSize(QSize(0, 50))
         self.stacked_widget_tab_btn.setStyleSheet(u"")
@@ -403,30 +409,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.stacked_widget_tab_btn)
 
-        self.options_tab = QStackedWidget(self.options)
+        self.options_tab = QStackedWidget(self.options_page)
         self.options_tab.setObjectName(u"options_tab")
         self.db_management_tab = QWidget()
         self.db_management_tab.setObjectName(u"db_management_tab")
         self.horizontalLayout_10 = QHBoxLayout(self.db_management_tab)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.scrollArea = QScrollArea(self.db_management_tab)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.scrollArea.setWidgetResizable(True)
-        self.scroll_area = QWidget()
-        self.scroll_area.setObjectName(u"scroll_area")
-        self.scroll_area.setGeometry(QRect(0, 0, 614, 358))
-        self.verticalLayout_5 = QVBoxLayout(self.scroll_area)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-
-        self.verticalLayout_5.addLayout(self.gridLayout)
-
-        self.scrollArea.setWidget(self.scroll_area)
-
-        self.horizontalLayout_10.addWidget(self.scrollArea)
-
         self.options_tab.addWidget(self.db_management_tab)
         self.reset_tab = QWidget()
         self.reset_tab.setObjectName(u"reset_tab")
@@ -434,9 +422,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.options_tab)
 
-        self.stackedWidget.addWidget(self.options)
+        self.stacked_pages.addWidget(self.options_page)
 
-        self.verticalLayout.addWidget(self.stackedWidget)
+        self.verticalLayout.addWidget(self.stacked_pages)
 
 
         self.horizontalLayout_2.addWidget(self.inside_container)
@@ -448,8 +436,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(3)
-        self.toolBox.setCurrentIndex(0)
+        self.stacked_pages.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -476,10 +463,6 @@ class Ui_MainWindow(object):
         self.sidebar_toggle_btn.setText("")
         self.app_name_label.setText(QCoreApplication.translate("MainWindow", u"ASENA", None))
         self.app_icon_label.setText("")
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page_3), QCoreApplication.translate("MainWindow", u"Page 1", None))
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page_4), QCoreApplication.translate("MainWindow", u"Page 2", None))
         self.settings_db_management_btn.setText(QCoreApplication.translate("MainWindow", u"Veritaban\u0131", None))
         self.reset_btn.setText(QCoreApplication.translate("MainWindow", u"S\u0131f\u0131rlama", None))
         self.common_btn.setText(QCoreApplication.translate("MainWindow", u"Genel", None))

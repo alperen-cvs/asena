@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>859</width>
+    <width>1132</width>
     <height>529</height>
    </rect>
   </property>
@@ -103,7 +103,7 @@ QScrollArea {
         <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>10</number>
        </property>
        <item>
         <widget class="QFrame" name="minisidebar">
@@ -562,99 +562,79 @@ QScrollArea {
            </widget>
           </item>
           <item>
-           <widget class="QStackedWidget" name="stackedWidget">
+           <widget class="QStackedWidget" name="stacked_pages">
             <property name="currentIndex">
-             <number>3</number>
+             <number>6</number>
             </property>
-            <widget class="QWidget" name="pushbutton">
+            <widget class="QWidget" name="active_orders">
              <layout class="QHBoxLayout" name="horizontalLayout_7">
               <item>
-               <widget class="QPushButton" name="pushButton">
-                <property name="text">
-                 <string>PushButton</string>
+               <widget class="QScrollArea" name="scrollbar_of_active_order_page_area">
+                <property name="widgetResizable">
+                 <bool>true</bool>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_2">
-                <property name="text">
-                 <string>PushButton</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="table_widget">
-             <layout class="QHBoxLayout" name="horizontalLayout_12">
-              <item>
-               <widget class="QTableWidget" name="tableWidget">
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="editTriggers">
-                 <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-                </property>
-                <property name="rowCount">
-                 <number>5</number>
-                </property>
-                <property name="columnCount">
-                 <number>5</number>
-                </property>
-                <row/>
-                <row/>
-                <row/>
-                <row/>
-                <row/>
-                <column/>
-                <column/>
-                <column/>
-                <column/>
-                <column/>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="toolbox">
-             <layout class="QHBoxLayout" name="horizontalLayout_8">
-              <item>
-               <widget class="QToolBox" name="toolBox">
-                <property name="currentIndex">
-                 <number>0</number>
-                </property>
-                <widget class="QWidget" name="page_3">
+                <widget class="QWidget" name="active_order_page_area">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
+                   <width>905</width>
+                   <height>442</height>
                   </rect>
                  </property>
-                 <attribute name="label">
-                  <string>Page 1</string>
-                 </attribute>
-                </widget>
-                <widget class="QWidget" name="page_4">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
-                  </rect>
-                 </property>
-                 <attribute name="label">
-                  <string>Page 2</string>
-                 </attribute>
                 </widget>
                </widget>
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="options">
+            <widget class="QWidget" name="orders_history_page">
+             <layout class="QHBoxLayout">
+              <item>
+               <widget class="QTableWidget" name="orders_history_table"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="order_page">
+             <widget class="QScrollArea" name="scrollbar_of_order_page_area">
+              <property name="geometry">
+               <rect>
+                <x>380</x>
+                <y>170</y>
+                <width>120</width>
+                <height>80</height>
+               </rect>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="order_page_area">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>118</width>
+                 <height>78</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="table_management_page">
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QTableWidget" name="table_management_table"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="turnover_page"/>
+            <widget class="QWidget" name="stock_management_page">
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QTableWidget" name="stock_managament_table"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="options_page">
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
                <widget class="QFrame" name="stacked_widget_tab_btn">
@@ -714,33 +694,7 @@ QScrollArea {
               <item>
                <widget class="QStackedWidget" name="options_tab">
                 <widget class="QWidget" name="db_management_tab">
-                 <layout class="QHBoxLayout" name="horizontalLayout_10">
-                  <item>
-                   <widget class="QScrollArea" name="scrollArea">
-                    <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                    </property>
-                    <property name="widgetResizable">
-                     <bool>true</bool>
-                    </property>
-                    <widget class="QWidget" name="scroll_area">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>0</y>
-                       <width>614</width>
-                       <height>358</height>
-                      </rect>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_5">
-                      <item>
-                       <layout class="QGridLayout" name="gridLayout"/>
-                      </item>
-                     </layout>
-                    </widget>
-                   </widget>
-                  </item>
-                 </layout>
+                 <layout class="QHBoxLayout" name="horizontalLayout_10"/>
                 </widget>
                 <widget class="QWidget" name="reset_tab"/>
                </widget>

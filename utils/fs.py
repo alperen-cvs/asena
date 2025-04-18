@@ -94,3 +94,29 @@ def copyfile2dst(source: str,dest: str,force = False,throw_exc = False) -> bool:
         logger.critical("Cannot copy %s to %s (%s)" % (source,dest,copy_error))
         return False
     return True
+
+def freeze(*files):
+    """
+    removes read and write permissions for given files
+    """
+    current_username = os.getlogin()
+    output = True
+    for file in files[:]:
+        try:
+            os.system(f"icacls {str(file)} /deny \"{current_username}\":D ")
+        except:
+            output = False
+    return output
+
+def unfreeze(*files):
+    """
+    fixes write and read permissions of given files
+    """
+    current_username = os.getlogin()
+    output = True
+    for file in files[:]:
+        try:
+            os.system(f"icacls /reset \"{current_username}\" ")
+        except:
+            output = False
+    return output
